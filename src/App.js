@@ -1,23 +1,27 @@
-import logo from './logo.svg';
+import { useState, useEffect} from 'react';
 import './App.css';
 
 function App() {
+  const [Data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:5000/get_data')
+      .then(response => response.json())
+      .then(Data => { const parsData = JSON.parse(Data);
+        console.log(typeof parsData);
+        setData(parsData);})
+      .catch(error => console.error("Cannot find the file", error));
+  }, []); 
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div id="contentContainer">
+        {Data.map((item, index) => (
+          <table>
+            <tr key={index}>{item.Abdul}</tr>
+          </table>
+        ))}
+      </div>
     </div>
   );
 }
